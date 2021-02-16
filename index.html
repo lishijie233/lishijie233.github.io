@@ -181,7 +181,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/%20" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -191,7 +191,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/%20" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -201,7 +201,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/%20" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -211,7 +211,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/%20" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -221,7 +221,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/%20" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -333,21 +333,18 @@
       
         
           
-            <h1 id="lambda-表达式入门手记-一-几个典型用法示例"><a href="#lambda-表达式入门手记-一-几个典型用法示例" class="headerlink" title="lambda 表达式入门手记(一) 几个典型用法示例"></a>lambda 表达式入门手记(一) 几个典型用法示例</h1><blockquote>
-<p>一直在使用 JDK 8 , 也一直在说 lambda 新特型, 一直有些朦胧, 今天就来理一理  </p>
-</blockquote>
-<h2 id="lambda-表达式的几个典型用法示例"><a href="#lambda-表达式的几个典型用法示例" class="headerlink" title="lambda 表达式的几个典型用法示例"></a>lambda 表达式的几个典型用法示例</h2><h3 id="使用-lambda-表达式实现-Runnable-接口"><a href="#使用-lambda-表达式实现-Runnable-接口" class="headerlink" title="使用 lambda 表达式实现 Runnable 接口"></a>使用 lambda 表达式实现 Runnable 接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunnableTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// &lt;传统方式&gt; : 这里主要是通过内部类来实现的, 启动一个线程, 然后输出一句话</span></span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;Welcome to my blog.&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// &lt;使用 lambda 表达式&gt; : 这里看 使用 lambda 表达式, 似乎也没少啥, 就少了个 new Runnable 的过程</span></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt;</span><br><span class="line">                System.out.println(<span class="string">&quot;Welcome to my blog.&quot;</span>)</span><br><span class="line">        ).start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="使用-lambda-表达式实现-Comparator-接口"><a href="#使用-lambda-表达式实现-Comparator-接口" class="headerlink" title="使用 lambda 表达式实现 Comparator 接口"></a>使用 lambda 表达式实现 Comparator 接口</h3><p>首先需要一个实体类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为了简洁, 这里使用lombok注解自动生成 构造器 与 get、set方法</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String orderNo;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>排序规则 : 通过 orderNo 进行排序 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComparatorTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;User&gt; userList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        User zs = <span class="keyword">new</span> User(<span class="string">&quot;3&quot;</span>, <span class="string">&quot;zs&quot;</span>);<span class="comment">// 张三</span></span><br><span class="line">        User ls = <span class="keyword">new</span> User(<span class="string">&quot;4&quot;</span>, <span class="string">&quot;ls&quot;</span>);<span class="comment">// 李四</span></span><br><span class="line">        User zl = <span class="keyword">new</span> User(<span class="string">&quot;6&quot;</span>, <span class="string">&quot;zl&quot;</span>);<span class="comment">// 赵六</span></span><br><span class="line">        User ww = <span class="keyword">new</span> User(<span class="string">&quot;5&quot;</span>, <span class="string">&quot;ww&quot;</span>);<span class="comment">// 王五</span></span><br><span class="line">        userList.add(zs);</span><br><span class="line">        userList.add(ls);</span><br><span class="line">        userList.add(zl);</span><br><span class="line">        userList.add(ww);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// &lt;传统方式&gt;</span></span><br><span class="line">        Collections.sort(userList, <span class="keyword">new</span> Comparator&lt;User&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(User u1, User u2)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> u1.getOrderNo().compareTo(u2.getOrderNo());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// &lt;使用 lambda 表达式&gt;</span></span><br><span class="line">        Collections.sort(userList, (s1, s2) -&gt; s1.getOrderNo().compareTo(s2.getOrderNo()));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// &lt;使用 lambda 表达式的 另一种写法&gt;</span></span><br><span class="line">        userList.sort(Comparator.comparing(User::getOrderNo));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="使用-lambda-表达式对-列表数据进行迭代"><a href="#使用-lambda-表达式对-列表数据进行迭代" class="headerlink" title="使用 lambda 表达式对 列表数据进行迭代"></a>使用 lambda 表达式对 列表数据进行迭代</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**接着用上面 Comparator 接口的例子*/</span></span><br><span class="line"><span class="comment">// &lt;传统方式&gt; 直接 for 循环 / 增强 for 循环 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// &lt;使用 lambda 表达式&gt;</span></span><br><span class="line">userList.forEach(u -&gt; System.out.println(u));</span><br><span class="line"><span class="comment">// &lt;使用 lambda 表达式的 另一种写法&gt;</span></span><br><span class="line">userList.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
-<p>学习新东西, 掌握新技术, 最好的方式是实践;  </p>
-<p>带着问题去看问题掌握的会更深, 这不是一句空话.</p>
-</blockquote>
+          lambda 表达式入门手记(一) 几个典型用法示例
+一直在使用 JDK 8 , 也一直在说 lambda 新特型, 一直有些朦胧, 今天就来理一理  
 
-          
+lambda 表达式的几个典型用法示例使用 lambda 表达式实现 Runnable 接口12345678910111213141516pub
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/02/12/lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%A5%E9%97%A8%E6%89%8B%E8%AE%B0-%E4%B8%80-%E5%87%A0%E4%B8%AA%E5%85%B8%E5%9E%8B%E7%94%A8%E6%B3%95%E7%A4%BA%E4%BE%8B/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -487,24 +484,19 @@
       
         
           
-            <h1 id="开源之路第一步-Github项目同步"><a href="#开源之路第一步-Github项目同步" class="headerlink" title="开源之路第一步-Github项目同步"></a>开源之路第一步-Github项目同步</h1><blockquote>
-<p>最近在一群老师的帮助下，加入到了Github上某开源项目的贡献队伍中.<br>拉代码，远程关联同步的时候，遇到了一些问题，<br>目测适用于多数的Maven项目.  </p>
-</blockquote>
-<h2 id="项目和工具说明"><a href="#项目和工具说明" class="headerlink" title="项目和工具说明"></a>项目和工具说明</h2><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">项目管理工具: Git</span><br><span class="line">项目类型: Maven工程</span><br><span class="line">JDK版本: 1.8+</span><br></pre></td></tr></table></figure>
-<h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><h3 id="1-拉取代码"><a href="#1-拉取代码" class="headerlink" title="1.拉取代码"></a>1.拉取代码</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">给开源项目提交代码不能直接提交上去, 都需要先fork到自己的仓库中, 然后和源工程进行关联    </span><br><span class="line">这样做的目的是为了保证不污染源项目本身(一般我们也没有直接修改源项目的权限, 都是通过提issues和PR).  </span><br></pre></td></tr></table></figure>
-<h4 id="1-1开启长路径创建功能"><a href="#1-1开启长路径创建功能" class="headerlink" title="1.1开启长路径创建功能"></a>1.1开启长路径创建功能</h4><p>因为这个项目的文件名比较长, 导致代码路径较长, 在 Windows 上就会产生一个问题,<br>Git在创建路径的时候是通过 Windows API 实现的, 路径最大长度被限制在 260,<br>所以需要在git开启设置来让超长路径名能正确的省生成, 命令如下.<br><code>git config --global core.longpaths true</code><br>如果不开启此设置, 项目在下载完成后会因无法生成正确的路径而被系统自动删除,导致编译时出现文件缺失的问题.  </p>
-<h4 id="1-2拉取代码"><a href="#1-2拉取代码" class="headerlink" title="1.2拉取代码"></a>1.2拉取代码</h4><ul>
-<li>先将源项目 fork 到码云(Gitee)  </li>
-<li>直接克隆下代码到本地  </li>
-<li>下载完成后需要, ip 变了, git 远程仓库的地址也变了, 这个时候就要自己手动修改项目连接到的远程仓库地址  </li>
-<li>修改 remote 地址: 在你本地的项目位置，右键 –&gt; git bash here<br>然后输入命令<code>git remote set-url origin xxx.git</code>,<br>这里的 xxx.git 是自己 Github 的项目地址, 这一步主要是将代码远程地址设置成你的 Github 地址.   </li>
-<li>设置 upstream 地址 &amp; fork 同步:<br>查看远程分支和路径 <code>git remote -v</code>, 确认自己的 GitHub 地址确实已经添加上去了.<br>添加源项目地址<code>git remote add upstream yyy.git</code><br>主要是为了让本地项目和源项目进行关联, 这样方便直接更新到源项目的最新代码.<br><code>git remote -v</code>验证是否添加成功.    </li>
-<li>将源项目代码同步到本地<br><code>git fetch upstream</code> 默认将源项目<code>main</code>分支代码拉取到本地, 如果需要在命令的最后添加指定分支名即可.<br><code>git rebase upstream/main</code><br><code>git push</code> 完成提交同步<br><code>git log</code> 查看提交日志<br>如果需要贡献代码, 需要执行<code>git merge upstream</code></li>
-</ul>
-<h3 id="2-静候编译完成"><a href="#2-静候编译完成" class="headerlink" title="2 静候编译完成"></a>2 静候编译完成</h3><p>使用如下 maven 命令完成编译</p>
-<p><code>mvn clean package install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Drat.skip=true -Dcheckstyle.skip=true</code></p>
+          开源之路第一步-Github项目同步
+最近在一群老师的帮助下，加入到了Github上某开源项目的贡献队伍中.拉代码，远程关联同步的时候，遇到了一些问题，目测适用于多数的Maven项目.  
 
-          
+项目和工具说明123项目管理工具: Git项目类型: Maven工程JDK版本: 1.8+
+具体步骤1.拉取
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/02/11/%E5%BC%80%E6%BA%90%E4%B9%8B%E8%B7%AF%E7%AC%AC%E4%B8%80%E6%AD%A5-Github%E9%A1%B9%E7%9B%AE%E5%90%8C%E6%AD%A5/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -582,7 +574,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives/%20%7C%7C%20archive">
+                <a href="/archives/%7C%7C%20archive">
               
                   <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
